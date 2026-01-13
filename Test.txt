@@ -4,6 +4,9 @@ Listado de alumnos del curso de Estructuras de Datos
 2. Alexis Gonzales
 3.
 4.
+5.
+6.
+7. Rojas Villaorduña, Aaron
 5. Alvaro Salazar
 6. Alejandro Sotelo
 7. Paolo Villavicencio
