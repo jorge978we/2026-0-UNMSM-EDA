@@ -31,4 +31,10 @@ void DemoArray() {
 
     arr1.sort(&Menor);
     cout << arr1 << endl;
+
+    arr1.Sumar(5);
+    cout << arr1 << endl;
+
+    arr1.Mult(2);
+    cout << arr1 << endl;
 }

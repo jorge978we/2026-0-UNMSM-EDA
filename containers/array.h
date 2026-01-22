@@ -8,23 +8,25 @@ using namespace std;
 
 template <typename T>
 class CArray {
-  using value_type = T;
-  using CompareFunc = bool (*)(const T &, const T &);
+    using value_type = T;
+    using CompareFunc = bool (*)(const T &, const T &);
 
-private:
-  size_t m_capacity = 0, m_last = 0;
-  value_type *m_data = nullptr;
+  private:
+    size_t m_capacity = 0, m_last = 0;
+    value_type *m_data = nullptr;
 
-public:
-  CArray(size_t size);
-  ~CArray();
+  public:
+    CArray(size_t size);
+    ~CArray();
 
-  void push_back(value_type value);
-  value_type &operator[](size_t index);
-  size_t getSize() const
-  {   return m_last + 1;  };
-  void resize(size_t delta = 10);
-  void sort( CompareFunc pComp );
+    void push_back(value_type value);
+    value_type &operator[](size_t index);
+    size_t getSize() const
+    {   return m_last + 1;  };
+    void resize(size_t delta = 10);
+    void sort( CompareFunc pComp );
+    void Sumar(int n);
+    void Mult (int n);
 };
 
 template <typename T>
@@ -69,6 +71,18 @@ void CArray<T>::resize(size_t delta) {
 template <typename T>
 void CArray<T>::sort( CompareFunc pComp ){
     BurbujaRecursivo(m_data, m_last, pComp);
+}
+
+template <typename T>
+void CArray<T>::Sumar(int n){
+    for (auto i = 0; i < getSize(); ++i)
+      m_data[i] += n;
+}
+
+template <typename T>
+void CArray<T>::Mult(int n){
+    for (auto i = 0; i < getSize(); ++i)
+      m_data[i] *= n;
 }
 
 template <typename T>
