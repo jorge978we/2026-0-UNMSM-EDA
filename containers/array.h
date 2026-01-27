@@ -10,14 +10,13 @@ template <typename _T>
 struct Trait1
 {
     using T = _T;
-
+    using CompareFunc = bool (*)(const T &, const T &);
 };
 
 template <typename Traits>
 class CArray {
-    using value_type = typename Traits::T;
-    
-    using CompareFunc = bool (*)(const value_type &, const value_type &);
+    using value_type  = typename Traits::T;
+    using CompareFunc = typename Traits::CompareFunc;
 
   private:
     size_t m_capacity = 0, m_last = 0;
