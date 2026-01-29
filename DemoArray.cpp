@@ -12,6 +12,9 @@ bool Mult7(T1 &elem){
   return elem%7 == 0;
 }
 
+template <typename Q>
+void Print(Q &elem){    cout << elem << ",";     }
+
 void DemoArray() {
     const int N = 5;
     //  /using 
@@ -51,6 +54,12 @@ void DemoArray() {
     Foreach(arr1, &IncBasico<T1>);
     cout << arr1 << endl;
     cout << "Terminó" << endl;
+
+    ::Foreach(arr1, &Print);                      cout << endl;
+    ::Foreach(arr1.begin(),  arr1.end(),  &Print);  cout << endl;
+    ::Foreach(arr1.rbegin(), arr1.rend(), &Print);  cout << endl;
+
+    cout << "Terminó #2" << endl; 
 
     auto iter = arr1.FirstThat( &Mult7 ); 
     if( iter != arr1.end() )

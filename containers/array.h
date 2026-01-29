@@ -33,8 +33,12 @@ class ArrayForwardIterator
             m_pos  (another.m_pos)
     {}
     virtual ~ArrayForwardIterator(){};
-    ArrayForwardIterator<Container> &operator++();
-    bool operator!=(ArrayForwardIterator<Container> &another){
+    ArrayForwardIterator<Container> &operator++(){
+        if( m_pos < m_pContainer->getSize() )
+            ++m_pos;
+        return *this;
+    }
+    bool operator!=(const ArrayForwardIterator<Container> &another){
         return m_pContainer != another.m_pContainer ||
                m_pos        != another.m_pos;         
     }
@@ -44,17 +48,45 @@ class ArrayForwardIterator
 };
 
 template <typename Container>
-ArrayForwardIterator<Container>& ArrayForwardIterator<Container>::operator++(){
-    if( m_pos < m_pContainer->getSize() )
-        ++m_pos;
-    return *this;
-}
+class ArrayBackwardIterator
+{ private:
+    using value_type  = typename Container::value_type;
+
+    Container  *m_pContainer = nullptr;
+    value_type *m_data       = nullptr;
+    size_t      m_pos        = -1;
+  public:
+    ArrayBackwardIterator(Container *pContainer, size_t pos=0) 
+         : m_pContainer(pContainer) {
+           m_data = m_pContainer->m_data;
+           m_pos = pos;
+         }
+    ArrayBackwardIterator(ArrayBackwardIterator<Container> &another)
+         :  m_pContainer(another.m_pContainer),
+            m_data (another.m_data),
+            m_pos  (another.m_pos)
+    {}
+    virtual ~ArrayBackwardIterator(){};
+    ArrayBackwardIterator<Container> &operator++(){
+        if( m_pos > -1 )
+            --m_pos;
+        return *this;
+    }
+    bool operator!=(const ArrayBackwardIterator<Container> &another){
+        return m_pContainer != another.m_pContainer ||
+               m_pos        != another.m_pos;         
+    }
+    value_type &operator*(){
+      return m_data[m_pos];
+    }
+};
 
 template <typename Traits>
 class CArray {
     using value_type  = typename Traits::T;
     using CompareFunc = typename Traits::CompareFunc;
-    using forward_iterator = ArrayForwardIterator< CArray<Traits> >;
+    using forward_iterator  = ArrayForwardIterator < CArray<Traits> >;
+    using backward_iterator = ArrayBackwardIterator< CArray<Traits> >;
     friend forward_iterator;
   private:
     size_t m_capacity = 0, m_last = 0;
@@ -75,6 +107,11 @@ class CArray {
     { return forward_iterator(this);  }
     forward_iterator end()
     { return forward_iterator(this, getSize());  }
+
+    backward_iterator rbegin()
+    { return backward_iterator(this, getSize()-1);  }
+    forward_iterator rend()
+    { return backward_iterator(this, -1);  }
 
     template <typename ObjFunc, typename ...Args>
     void Foreach(ObjFunc of, Args... args){
